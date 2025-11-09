@@ -1,0 +1,60 @@
+from tkinter import *
+from tkinter import messagebox
+
+root = Tk()
+root.title("User Info Form")
+root.geometry("350x400")
+root.configure(bg="lightblue")
+
+Label(root, text="USER INFORMATION", font=("Arial", 14, "bold"), bg="lightblue").pack(pady=10)
+
+
+Label(root, text="Name:", bg="lightblue").pack()
+name_entry = Entry(root, width=30)
+name_entry.pack(pady=3)
+
+
+Label(root, text="Email:", bg="lightblue").pack()
+email_entry = Entry(root, width=30)
+email_entry.pack(pady=3)
+
+
+Label(root, text="Age:", bg="lightblue").pack()
+age_entry = Entry(root, width=30)
+age_entry.pack(pady=3)
+
+
+Label(root, text="Gender:", bg="lightblue").pack()
+gender = StringVar(value="Male")
+Radiobutton(root, text="Male", variable=gender, value="Male", bg="lightblue").pack()
+Radiobutton(root, text="Female", variable=gender, value="Female", bg="lightblue").pack()
+
+
+Label(root, text="Hobbies:", bg="lightblue").pack()
+hobby1 = IntVar()
+hobby2 = IntVar()
+Checkbutton(root, text="Reading", variable=hobby1, bg="lightblue").pack()
+Checkbutton(root, text="Sports", variable=hobby2, bg="lightblue").pack()
+
+
+Label(root, text="Country:", bg="lightblue").pack()
+country = StringVar(value="India")
+OptionMenu(root, country, "India", "USA", "UK", "Canada").pack(pady=3)
+
+
+def show_info():
+    name = name_entry.get()
+    email = email_entry.get()
+    age = age_entry.get()
+    gen = gender.get()
+    hobbies = []
+    if hobby1.get(): hobbies.append("Reading")
+    if hobby2.get(): hobbies.append("Sports")
+    
+    messagebox.showinfo("Submitted Details",
+        f"Name: {name}\nEmail: {email}\nAge: {age}\nGender: {gen}\n"
+        f"Hobbies: {', '.join(hobbies) or 'None'}\nCountry: {country.get()}")
+
+Button(root, text="Submit", command=show_info, bg="green", fg="white").pack(pady=10)
+
+root.mainloop()

@@ -1,0 +1,95 @@
+import tkinter as tk
+from tkinter import ttk, messagebox
+
+def submit_form():
+    name = name_var.get()
+    email = email_var.get()
+    gender = gender_var.get()
+    country = country_var.get()
+    hobbies = []
+    if hobby1_var.get():
+        hobbies.append("Reading")
+    if hobby2_var.get():
+        hobbies.append("Sports")
+    if hobby3_var.get():
+        hobbies.append("Music")
+
+    # Validation
+    if not name or not email:
+        messagebox.showerror("Error", "Please fill all required fields!")
+        return
+
+    # Show info
+    info = (
+        f"Name: {name}\n"
+        f"Email: {email}\n"
+        f"Gender: {gender}\n"
+        f"Country: {country}\n"
+        f"Hobbies: {', '.join(hobbies)}"
+    )
+    messagebox.showinfo("Registration Successful", info)
+
+    # Print in console
+    print("\n=== Registration Details ===")
+    print(info)
+
+def clear_form():
+    name_var.set("")
+    email_var.set("")
+    gender_var.set("Male")
+    country_var.set(countries[0])
+    hobby1_var.set(0)
+    hobby2_var.set(0)
+    hobby3_var.set(0)
+
+# Main Window
+root = tk.Tk()
+root.title("Registration Form")
+root.geometry("400x400")
+root.resizable(False, False)
+
+# Variables
+name_var = tk.StringVar()
+email_var = tk.StringVar()
+gender_var = tk.StringVar(value="Male")
+country_var = tk.StringVar()
+hobby1_var = tk.IntVar()
+hobby2_var = tk.IntVar()
+hobby3_var = tk.IntVar()
+
+countries = ["India", "USA", "UK", "Canada", "Australia"]
+country_var.set(countries[0])
+
+# Title Label
+tk.Label(root, text="Registration Form", font=("Arial", 16, "bold")).pack(pady=10)
+
+# Name
+tk.Label(root, text="Full Name:", anchor="w").pack(fill="x", padx=20)
+tk.Entry(root, textvariable=name_var).pack(fill="x", padx=20, pady=5)
+
+# Email
+tk.Label(root, text="Email:", anchor="w").pack(fill="x", padx=20)
+tk.Entry(root, textvariable=email_var).pack(fill="x", padx=20, pady=5)
+
+# Gender
+tk.Label(root, text="Gender:", anchor="w").pack(fill="x", padx=20)
+tk.Radiobutton(root, text="Male", variable=gender_var, value="Male").pack(anchor="w", padx=40)
+tk.Radiobutton(root, text="Female", variable=gender_var, value="Female").pack(anchor="w", padx=40)
+tk.Radiobutton(root, text="Other", variable=gender_var, value="Other").pack(anchor="w", padx=40)
+
+# Country Dropdown
+tk.Label(root, text="Country:", anchor="w").pack(fill="x", padx=20)
+ttk.Combobox(root, textvariable=country_var, values=countries, state="readonly").pack(fill="x", padx=20, pady=5)
+
+# Hobbies
+tk.Label(root, text="Hobbies:", anchor="w").pack(fill="x", padx=20)
+tk.Checkbutton(root, text="Reading", variable=hobby1_var).pack(anchor="w", padx=40)
+tk.Checkbutton(root, text="Sports", variable=hobby2_var).pack(anchor="w", padx=40)
+tk.Checkbutton(root, text="Music", variable=hobby3_var).pack(anchor="w", padx=40)
+
+# Buttons
+tk.Button(root, text="Submit", command=submit_form, bg="green", fg="white", width=10).pack(pady=10)
+tk.Button(root, text="Clear", command=clear_form, bg="red", fg="white", width=10).pack()
+
+# Run GUI
+root.mainloop()

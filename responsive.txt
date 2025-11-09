@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Responsive Web Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: lightblue;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: navy;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+        .container {
+            width: 80%;
+            max-width: 600px;
+            background-color: white;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px gray;
+        }
+        h2 {
+            text-align: center;
+            color: navy;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: navy;
+            color: white;
+            padding: 10px;
+            margin-top: 15px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: blue;
+            cursor: pointer;
+        }
+        @media (max-width: 600px) {
+            .container {
+                width: 90%;
+            }
+        }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>My Responsive Web Page</h1>
+    </header>
+
+    <div class="container">
+      <h2>User Information</h2>
+
+      <label>Name:</label>
+      <input type="text" placeholder="Enter your name" />
+
+      <label>Email:</label>
+      <input type="email" placeholder="Enter your email" />
+
+      <label>Gender:</label>
+      <select>
+          <option>Male</option>
+          <option>Female</option>
+      </select>
+
+      <label>Hobbies:</label>
+      <textarea placeholder="Your hobbies..."></textarea>
+
+      <label>Country:</label>
+      <select>
+          <option>India</option>
+          <option>USA</option>
+          <option>UK</option>
+          <option>Canada</option>
+      </select>
+
+      <button>Submit</button>
+    </div>
+  </body>
+</html>
