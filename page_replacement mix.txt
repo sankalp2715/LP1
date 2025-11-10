@@ -1,0 +1,131 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <unordered_map>
+using namespace std;
+
+void fifo(vector<int> pages, int frames) {
+    queue<int> q;
+    vector<int> inFrame;
+    int faults = 0, hits = 0;
+
+    for (int p : pages) {
+        if (find(inFrame.begin(), inFrame.end(), p) == inFrame.end()) {
+            if (inFrame.size() < frames) {
+                inFrame.push_back(p);
+            } else {
+                int remove = q.front();
+                q.pop();
+                inFrame.erase(find(inFrame.begin(), inFrame.end(), remove));
+                inFrame.push_back(p);
+            }
+            q.push(p);
+            faults++;
+        } else {
+            hits++;
+        }
+    }
+    cout << "\nFIFO: Page Faults = " << faults << ", Hits = " << hits << endl;
+}
+
+void lru(vector<int> pages, int frames) {
+    vector<int> inFrame;
+    unordered_map<int, int> recent;
+    int faults = 0, hits = 0;
+
+    for (int i = 0; i < pages.size(); i++) {
+        int p = pages[i];
+        if (find(inFrame.begin(), inFrame.end(), p) == inFrame.end()) {
+            if (inFrame.size() < frames) {
+                inFrame.push_back(p);
+            } else {
+                int lru = inFrame[0];
+                for (int f : inFrame) {
+                    if (recent[f] < recent[lru])
+                        lru = f;
+                }
+                inFrame.erase(find(inFrame.begin(), inFrame.end(), lru));
+                inFrame.push_back(p);
+            }
+            faults++;
+        } else {
+            hits++;
+        }
+        recent[p] = i; // Update recent use
+    }
+    cout << "\nLRU: Page Faults = " << faults << ", Hits = " << hits << endl;
+}
+
+void optimal(vector<int> pages, int frames) {
+    vector<int> inFrame;
+    int faults = 0, hits = 0;
+
+    for (int i = 0; i < pages.size(); i++) {
+        int p = pages[i];
+        if (find(inFrame.begin(), inFrame.end(), p) == inFrame.end()) {
+            if (inFrame.size() < frames) {
+                inFrame.push_back(p);
+            } else {
+                int farthest = -1, index = -1;
+                for (int j = 0; j < inFrame.size(); j++) {
+                    int nextUse = -1;
+                    for (int k = i + 1; k < pages.size(); k++) {
+                        if (inFrame[j] == pages[k]) {
+                            nextUse = k;
+                            break;
+                        }
+                    }
+                    if (nextUse == -1) {
+                        index = j;
+                        break;
+                    }
+                    if (nextUse > farthest) {
+                        farthest = nextUse;
+                        index = j;
+                    }
+                }
+                inFrame[index] = p;
+            }
+            faults++;
+        } else {
+            hits++;
+        }
+    }
+    cout << "\nOptimal: Page Faults = " << faults << ", Hits = " << hits << endl;
+}
+
+int main() {
+    int n, frames, choice;
+
+    cout << "Enter number of pages: ";
+    cin >> n;
+
+    vector<int> pages(n);
+    cout << "Enter page reference string: ";
+    for (int i = 0; i < n; i++)
+        cin >> pages[i];
+
+    cout << "Enter number of frames: ";
+    cin >> frames;
+
+    cout << "\n1. FIFO\n2. LRU\n3. Optimal\nEnter your choice: ";
+    cin >> choice;
+
+    switch (choice) {
+        case 1:
+            fifo(pages, frames);
+            break;
+        case 2:
+            lru(pages, frames);
+            break;
+        case 3:
+            optimal(pages, frames);
+            break;
+        default:
+            cout << "Invalid choice!";
+            break;
+    }
+
+    return 0;
+}
