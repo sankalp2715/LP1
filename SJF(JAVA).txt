@@ -1,0 +1,71 @@
+import java.util.Scanner;
+
+public class SJF_UserInput {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+       
+        System.out.print("Enter number of processes: ");
+        int n = sc.nextInt();
+
+        int[] pid = new int[n];   
+        int[] at = new int[n];    
+        int[] bt = new int[n];   
+        int[] wt = new int[n];    
+        int[] tat = new int[n];   
+        int[] ct = new int[n];    
+        boolean[] done = new boolean[n]; 
+
+        
+        for (int i = 0; i < n; i++) {
+            pid[i] = i + 1;
+            System.out.print("Enter Arrival Time for Process " + pid[i] + ": ");
+            at[i] = sc.nextInt();
+            System.out.print("Enter Burst Time for Process " + pid[i] + ": ");
+            bt[i] = sc.nextInt();
+        }
+
+        int time = 0, completed = 0;
+        float totalWT = 0, totalTAT = 0;
+
+        
+        while (completed < n) {
+            int shortest = -1;
+            int minBurst = Integer.MAX_VALUE;
+
+            for (int i = 0; i < n; i++) {
+                if (!done[i] && at[i] <= time && bt[i] < minBurst) {
+                    minBurst = bt[i];
+                    shortest = i;
+                }
+            }
+
+            if (shortest == -1) {  // No process has arrived yet
+                time++;
+                continue;
+            }
+
+            
+            time += bt[shortest];
+            ct[shortest] = time;
+            tat[shortest] = ct[shortest] - at[shortest];
+            wt[shortest] = tat[shortest] - bt[shortest];
+
+            totalWT += wt[shortest];
+            totalTAT += tat[shortest];
+            done[shortest] = true;
+            completed++;
+        }
+
+       
+        System.out.println("\nPid\tAT\tBT\tWT\tTAT");
+        for (int i = 0; i < n; i++) {
+            System.out.println("P" + pid[i] + "\t" + at[i] + "\t" + bt[i] + "\t" + wt[i] + "\t" + tat[i]);
+        }
+
+        System.out.println("\nAverage Waiting Time: " + totalWT / n);
+        System.out.println("Average Turnaround Time: " + totalTAT / n);
+
+        sc.close();
+    }
+}
